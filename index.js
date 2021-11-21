@@ -217,7 +217,7 @@ client.on("message", (msg) => {
             //console.log(res.data);
             var pro = provincecovid.province
             var txn_date = provincecovid.txn_date
-            var update_date = res.data[0].update_date
+            var update_date = provincecovid.update_date
             var new_case = provincecovid.new_case
             var total_case = provincecovid.total_case
             var new_death = provincecovid.new_death
