@@ -229,7 +229,7 @@ client.on("message", (msg) => {
                 .setDescription(`\`อัพเดตข้อมูล ${update_date}\``)
                 .addFields(
                     {name: 'ติดเชื้อเพิ่มวันนี้', value: `${new_case}`, inline: true},
-                    {name: 'ติดเชื้อสะสมในประเทศ', value: `${total_case}`, inline: true},
+                    {name: 'ติดเชื้อสะสมในจังหวัด', value: `${total_case}`, inline: true},
                     {name: 'เสียชีวิตเพิ่ม', value: `${new_death}`, inline: true},
                     {name: 'เสียชีวิตรวม', value: `${total_death}`, inline: true}
                 )
