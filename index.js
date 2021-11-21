@@ -1,7 +1,7 @@
 const {Client, Intents, MessageEmbed} = require('discord.js')
 const dotenv = require('dotenv')
 const axios = require('axios')
-const chart = require('chart.js')
+const Chart = require('chart.js')
 dotenv.config()
 
 const prefix = ';'
@@ -20,6 +20,16 @@ const url_quote = 'https://zenquotes.io/api/quotes'
 const url_covid = 'https://covid19.ddc.moph.go.th/api/Cases/today-cases-all'
 const url_MOPH_img = 'https://media.discordapp.net/attachments/910557153356550164/911654142768996352/logo_web.png'
 const url_slim = 'https://watasalim.vercel.app/api/quotes/random'
+
+const express = require('express')
+const app = express();
+const port = 3000;
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+})
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+})
 
 const client  = new Client(
     { 
@@ -113,8 +123,8 @@ client.on("message", (msg) => {
             .setColor('#03045e')
 	        .setTitle(':file_folder: Command List')
 	        .setDescription('**:red_circle: Prefix : `;`**'+ 
-                            '\n\n**:school: Schedule** \n`;schedule_1` = `ดูตารางสอน สัปดาห์ที่ 1` \n `;schedule_2` = `ดูตารางสอน สัปดาห์ที่ 2`'+ 
-                            '\n\n**:memo: Test Schudule**\n `;gatpat` = `ดูตารางสอบ Gat & Pat และดูเวลาเตรียมตัว`'+ 
+                            '\n\n**:school: Class Schedule** \n`;schedule_1` = `ดูตารางสอน สัปดาห์ที่ 1` \n `;schedule_2` = `ดูตารางสอน สัปดาห์ที่ 2`'+ 
+                            '\n\n**:memo: TCAS65 Schudule**\n `;gatpat` = `ดูตารางสอบ Gat & Pat และดูเวลาเตรียมตัว`'+ 
                             '\n `;saman` = `ดูตารางสอบ 9 วิชาสามัญ และดูเวลาเตรียมตัว` \n `;tcas65` = `ดูปฏิทิน TCAS65`'+ 
                             '\n\n **:speech_left: Message API** \n `;covid` = `ดูรายงานโควิดประจำวัน` \n `;inspire` = `ดูแรงบันดาลใจ`'+
                             '\n`;watasalim` = `ดูวาทกรรมสลิ่ม`'+
@@ -188,22 +198,20 @@ client.on("message", (msg) => {
 
 //================== watasalim ======================
 //https://watasalim.vercel.app/api api ทั้งหมด
-
-const url_weather = 'http://api.openweathermap.org/data/2.5/weather?q=Nonthaburi,TH'
 client.on("message", (msg) => {
     if (msg.content === prefix+'watasalim') {
         axios.get(url_slim).then(res => {
             const slim = res.data.quote.body
             const slim_embed = new MessageEmbed()
                 .setColor('#ffb703')
-                .setTitle(':speech_balloon: วาทกรรมสลิ่มสุดเจ๋ง')
+                .setTitle(':speech_balloon: วาทกรรมสลิ่ม')
                 .setDescription(`**${slim}**`)
             msg.channel.send({embeds: [slim_embed]})
         })
     }
-
-    
 })
+
+
 
 
 client.login(process.env.TOKEN)
