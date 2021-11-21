@@ -1,7 +1,7 @@
 const {Client, Intents, MessageEmbed} = require('discord.js')
 const dotenv = require('dotenv')
 const axios = require('axios')
-const Chart = require('chart.js')
+
 dotenv.config()
 
 const prefix = ';'
@@ -20,16 +20,6 @@ const url_quote = 'https://zenquotes.io/api/quotes'
 const url_covid = 'https://covid19.ddc.moph.go.th/api/Cases/today-cases-all'
 const url_MOPH_img = 'https://media.discordapp.net/attachments/910557153356550164/911654142768996352/logo_web.png'
 const url_slim = 'https://watasalim.vercel.app/api/quotes/random'
-
-const express = require('express')
-const app = express();
-const port = 3000;
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-})
 
 const client  = new Client(
     { 
@@ -159,10 +149,9 @@ client.on("message", (msg) => {
     }
 })
 
-
 //============ covid tracker ===============
 client.on("message", (msg) => {
-    if (msg.content === prefix+'covid') {
+    if (msg.content === prefix+'covid thailand') {
 
         // api covid 19 thailand form https://covid19.ddc.moph.go.th/api/Cases/today-cases-all
         //อ้างอิงข้อมูล กรมควบคุมโรค
@@ -195,7 +184,6 @@ client.on("message", (msg) => {
     }
 })
 
-
 //================== watasalim ======================
 //https://watasalim.vercel.app/api api ทั้งหมด
 client.on("message", (msg) => {
@@ -212,6 +200,43 @@ client.on("message", (msg) => {
 })
 
 
-
+//============= covid case province in thailand =======================
+const url_covid_province = 'https://covid19.ddc.moph.go.th/api/Cases/today-cases-by-provinces'
+const province = require('./province.json')
+client.on("message", (msg) => {
+    const commandBody = msg.content.slice(prefix.length)
+    const args = commandBody.split(' ')
+    const command = args.shift().toLowerCase()
+    const ag = args.toString()
+    if(command === 'covid') {
+        
+        //console.log(eval(`province.`+`${ag}`));
+        axios.get(url_covid_province).then(res => {
+            var provincecovid = res.data[eval(`province.`+`${ag.toLowerCase()}`)];
+            //console.log(provincecovid);
+            //console.log(res.data);
+            var pro = provincecovid.province
+            var txn_date = provincecovid.txn_date
+            var update_date = res.data[0].update_date
+            var new_case = provincecovid.new_case
+            var total_case = provincecovid.total_case
+            var new_death = provincecovid.new_death
+            var total_death = provincecovid.total_death
+    
+            const covidprovinceEmbed = new MessageEmbed()
+                .setColor('#001524')
+                .setTitle(`:microbe: รายงานยอดผู้ติดเชื้อ ${pro} ประจำวันที่ ${txn_date}`)
+                .setDescription(`\`อัพเดตข้อมูล ${update_date}\``)
+                .addFields(
+                    {name: 'ติดเชื้อเพิ่มวันนี้', value: `${new_case}`, inline: true},
+                    {name: 'ติดเชื้อสะสมในประเทศ', value: `${total_case}`, inline: true},
+                    {name: 'เสียชีวิตเพิ่ม', value: `${new_death}`, inline: true},
+                    {name: 'เสียชีวิตรวม', value: `${total_death}`, inline: true}
+                )
+                .setFooter('อ้างอิงข้อมูลจาก กรมควบคุมโรค', url_MOPH_img)
+            msg.channel.send({embeds: [covidprovinceEmbed]})
+        })
+    }
+})
 
 client.login(process.env.TOKEN)
