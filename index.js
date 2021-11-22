@@ -7,8 +7,7 @@ dotenv.config()
 const prefix = ';'
 
 const url_tcas65 = 'https://media.discordapp.net/attachments/906186108650528808/910210700692049920/IMG_9777.jpg?width=705&height=393'
-const url_schedule_1 = 'https://media.discordapp.net/attachments/869667633719545959/904565695344435240/IMG_9521.jpg?width=810&height=462'
-const url_schedule_2 = 'https://media.discordapp.net/attachments/869667633719545959/904565695092768808/IMG_9522.jpg?width=810&height=453'
+const url_schedule = 'https://media.discordapp.net/attachments/912032605845741578/912032636053123103/image0.jpg?width=759&height=499'
 const url_gatpat_img = 'https://media.discordapp.net/attachments/906186108650528808/910210699999985684/IMG_9779.jpg?width=502&height=502'
 const url_9saman_img = 'https://media.discordapp.net/attachments/906186108650528808/910210700218101860/IMG_9778.jpg?width=502&height=502'
 const url_mytcas = 'https://www.mytcas.com/news/announcement-61'
@@ -38,25 +37,17 @@ client.on('ready', () => {
 //=================== class schedule ================
 client.on('message', msg => {
     
-    if (msg.content === prefix+'schedule_1') {
-        const schedule_1 = new MessageEmbed()
+    if (msg.content === prefix+'schedule') {
+        const schedule = new MessageEmbed()
             .setColor('#ffb703')
-	        .setTitle(':memo: ตารางสอน ชั้นมัธยมศึกษาปีที่ 6/3 (สัปดาห์ที่ 1)')
+	        .setTitle(':memo: ตารางสอน ชั้นมัธยมศึกษาปีที่ 6/3 (online)')
 	        .setDescription('**:bangbang: อย่าลืมเช็คชื่อในแต่ละคาบ :bangbang:**')
-	        .setImage(url_schedule_1)
+	        .setImage(url_schedule)
             .setFooter('อ้างอิงข้อมูลจาก ฝ่ายวิชาการโรงเรียนมารีวิทยากบินทร์บุรี')
-        msg.channel.send({ embeds: [schedule_1] });
+        msg.channel.send({ embeds: [schedule] });
     }
     
-    if (msg.content === prefix+'schedule_2') {
-        const schedule_2 = new MessageEmbed()
-            .setColor('#ffb703')
-            .setTitle(':memo: ตารางสอน ชั้นมัธยมศึกษาปีที่ 6/3 (สัปดาห์ที่ 2)')
-            .setDescription('**:bangbang: อย่าลืมเช็คชื่อในแต่ละคาบ :bangbang:**')
-            .setImage(url_schedule_2)
-            .setFooter('อ้างอิงข้อมูลจาก ฝ่ายวิชาการโรงเรียนมารีวิทยากบินทร์บุรี')
-        msg.channel.send({ embeds: [schedule_2] });
-    }
+    
 })
 
 //=================== gatpat & saman schedule ================
@@ -113,10 +104,11 @@ client.on("message", (msg) => {
             .setColor('#03045e')
 	        .setTitle(':file_folder: Command List')
 	        .setDescription('**:red_circle: Prefix : `;`**'+ 
-                            '\n\n**:school: Class Schedule** \n`;schedule_1` = `ดูตารางสอน สัปดาห์ที่ 1` \n `;schedule_2` = `ดูตารางสอน สัปดาห์ที่ 2`'+ 
+                            '\n\n**:school: Class Schedule** \n`;schedule` = `ดูตารางสอน online` '+ 
                             '\n\n**:memo: TCAS65 Schudule**\n `;gatpat` = `ดูตารางสอบ Gat & Pat และดูเวลาเตรียมตัว`'+ 
                             '\n `;saman` = `ดูตารางสอบ 9 วิชาสามัญ และดูเวลาเตรียมตัว` \n `;tcas65` = `ดูปฏิทิน TCAS65`'+ 
-                            '\n\n **:speech_left: Message API** \n `;covid` = `ดูรายงานโควิดประจำวัน` \n `;inspire` = `ดูแรงบันดาลใจ`'+
+                            '\n\n **:speech_left: Message API** \n `;covid19 thailand` = `ดูรายงานโควิดประจำวัน`\n`;covid ชื่อจังหวัด` = `ดูรายงานโควิดประจำจังหวัด`'+
+                            ' \n `;inspire` = `ดูแรงบันดาลใจ`'+
                             '\n`;watasalim` = `ดูวาทกรรมสลิ่ม`'+
                             '\n\n **:mag_right: About** \n `;dev` = `ข้อมูลผู้พัฒนา`')
         msg.channel.send({ embeds: [command] });
@@ -151,7 +143,7 @@ client.on("message", (msg) => {
 
 //============ covid tracker ===============
 client.on("message", (msg) => {
-    if (msg.content === prefix+'covid thailand') {
+    if (msg.content === prefix+'covid19 thailand') {
 
         // api covid 19 thailand form https://covid19.ddc.moph.go.th/api/Cases/today-cases-all
         //อ้างอิงข้อมูล กรมควบคุมโรค
@@ -202,7 +194,7 @@ client.on("message", (msg) => {
 
 //============= covid case province in thailand =======================
 const url_covid_province = 'https://covid19.ddc.moph.go.th/api/Cases/today-cases-by-provinces'
-const province = require('./province.json')
+const prov = require('./province.json')
 client.on("message", (msg) => {
     const commandBody = msg.content.slice(prefix.length)
     const args = commandBody.split(' ')
@@ -212,7 +204,7 @@ client.on("message", (msg) => {
         
         //console.log(eval(`province.`+`${ag}`));
         axios.get(url_covid_province).then(res => {
-            var provincecovid = res.data[eval(`province.`+`${ag.toLowerCase()}`)];
+            var provincecovid = res.data[eval(`prov.`+`${ag.toLowerCase()}`)];
             //console.log(provincecovid);
             //console.log(res.data);
             var pro = provincecovid.province
@@ -236,7 +228,7 @@ client.on("message", (msg) => {
                 .setFooter('อ้างอิงข้อมูลจาก กรมควบคุมโรค', url_MOPH_img)
             msg.channel.send({embeds: [covidprovinceEmbed]})
         })
-    }
+    } 
 })
 
 client.login(process.env.TOKEN)
