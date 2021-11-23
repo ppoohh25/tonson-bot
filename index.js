@@ -105,7 +105,7 @@ client.on("message", (msg) => {
 	        .setTitle(':file_folder: Command List')
 	        .setDescription('**:red_circle: Prefix : `;`**'+ 
                             '\n\n**:school: Class Schedule** \n`;schedule` = `ดูตารางสอน online` '+ 
-                            '\n\n**:memo: TCAS65 Schudule**\n `;gatpat` = `ดูตารางสอบ Gat & Pat และดูเวลาเตรียมตัว`'+ 
+                            '\n\n**:memo: TCAS65 Schudule**\n `;gatpat` = `ดูตารางสอบ Gat & Pat และดูเวลาเตรียมตัว` \n `;tcas ชื่อย่อของมหาวิทยาลัย` = `ดูข้อมูล Admission`'+ 
                             '\n `;saman` = `ดูตารางสอบ 9 วิชาสามัญ และดูเวลาเตรียมตัว` \n `;tcas65` = `ดูปฏิทิน TCAS65`'+ 
                             '\n\n **:speech_left: Message API** \n `;covid19 thailand` = `ดูรายงานโควิดประจำวัน`\n`;covid ชื่อจังหวัด` = `ดูรายงานโควิดประจำจังหวัด`'+
                             ' \n `;inspire` = `ดูแรงบันดาลใจ`'+
@@ -195,9 +195,10 @@ client.on("message", (msg) => {
 //============= covid case province in thailand =======================
 const url_covid_province = 'https://covid19.ddc.moph.go.th/api/Cases/today-cases-by-provinces'
 const prov = require('./province.json')
+const url_tcas_university = 'https://api-tcas.herokuapp.com/'
 client.on("message", (msg) => {
     const commandBody = msg.content.slice(prefix.length)
-    const args = commandBody.split(' ')
+    const args = commandBody.split(/ +/)
     const command = args.shift().toLowerCase()
     const ag = args.toString()
     if(command === 'covid') {
@@ -229,6 +230,19 @@ client.on("message", (msg) => {
             msg.channel.send({embeds: [covidprovinceEmbed]})
         })
     } 
+    if (command === 'tcas') { 
+        axios.get(url_tcas_university).then(res => {
+            
+            const fetch = eval(`res.data.${ag.toLowerCase()}`)
+            const tcasEmbed = new MessageEmbed()
+                .setColor('#001524')
+                .setTitle(`:school: TCAS65 ${ag.toUpperCase()}`)
+                .setDescription(`${fetch.name} \n${fetch.url}`)
+                .setImage(`${fetch.url_img}`)
+                .setFooter(`อ้างอิงข้อมูลจาก ${fetch.name}`)
+            msg.channel.send({embeds: [tcasEmbed]})
+        })
+    }
 })
 
 client.login(process.env.TOKEN)
