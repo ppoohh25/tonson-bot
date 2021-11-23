@@ -313,8 +313,8 @@ client.on("messageCreate", async (msg) => {
 
             const friendEmbed = new MessageEmbed()
                 .setColor('#001524')
-                .setTitle(`Friend Information`)
-                .setDescription(`${name} \n ${nickname} \n ${ig}`)
+                .setTitle(`:bookmark_tabs: Friend Information`)
+                .setDescription(`ชื่อ-นามสกุล : ${name} \nชื่อเล่น : ${nickname} \nInstagram : ${ig}`)
                 .setThumbnail(`${img}`)
                 .setFooter(`อ้างอิงข้อมูลจาก https://github.com/lnwtxn`)
             msg.channel.send({embeds: [friendEmbed]})
