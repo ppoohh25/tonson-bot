@@ -18,6 +18,7 @@ Command Name | Function
 ;inspire | ดูแรงบันดาลใจ
 ;schedule | ดูตารางสอน online
 ;friend ชื่อเล่น | ดูข้อมูลติดต่อของเพื่อน
+;cheab | คำคมเฉียบๆ
 
 ## Example 
 * **;command**
@@ -58,3 +59,6 @@ Command Name | Function
 
     ![friend name](https://media.discordapp.net/attachments/912032605845741578/912703962568867870/unknown.png)
 
+* **;cheab**
+
+    ![cheab](https://media.discordapp.net/attachments/912032605845741578/913114503506432090/unknown.png)

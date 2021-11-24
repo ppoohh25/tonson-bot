@@ -1,4 +1,4 @@
-const {Client, Intents, MessageEmbed} = require('discord.js')
+const {Client, Intents, MessageEmbed, MessageActionRow, MessageSelectMenu} = require('discord.js')
 const dotenv = require('dotenv')
 const axios = require('axios')
 
@@ -23,6 +23,7 @@ const url_covid_province = 'https://covid19.ddc.moph.go.th/api/Cases/today-cases
 const prov = require('./province.json')
 const url_tcas_university = 'https://api-tcas.herokuapp.com/'
 const url_friend = 'https://mvk19-section3-api.herokuapp.com/'
+const url_cheab_quote = 'https://cheab-quote.herokuapp.com'
 
 const client  = new Client(
     { 
@@ -115,7 +116,7 @@ client.on("messageCreate", async (msg) => {
                             '\n `;saman` = `ดูตารางสอบ 9 วิชาสามัญ และดูเวลาเตรียมตัว` \n `;tcas65` = `ดูปฏิทิน TCAS65`'+ 
                             '\n\n **:speech_left: Message API** \n `;covid19 thailand` = `ดูรายงานโควิดประจำวัน`\n`;covid ชื่อจังหวัด` = `ดูรายงานโควิดประจำจังหวัด`'+
                             ' \n `;inspire` = `ดูแรงบันดาลใจ`'+
-                            '\n`;watasalim` = `ดูวาทกรรมสลิ่ม`'+
+                            '\n`;watasalim` = `ดูวาทกรรมสลิ่ม` \n `;cheab` = `คำคมเฉียบๆ`'+
                             '\n\n **:mag_right: About** \n `;dev` = `ข้อมูลผู้พัฒนา`')
         msg.channel.send({ embeds: [command] });
     }
@@ -216,6 +217,22 @@ client.on("messageCreate", async (msg) => {
             .setDescription(`**${wata}**`)
         msg.channel.send({embeds: [slim_embed]})
     }
+
+    if (msg.content === prefix+'cheab') {
+
+        const cheabData = async () => {
+            const res = await axios.get(url_cheab_quote)
+            const resdata = res.data
+            return resdata
+        }
+
+        const fetch = await cheabData()
+        let randomNum = Math.floor(Math.random() * fetch.quote.length)
+        //msg.reply(`${fetch.quote[randomNum]}`)
+        msg.reply(`${fetch.quote[randomNum]}`);
+
+    }
+
 })
 
 
@@ -326,5 +343,7 @@ client.on("messageCreate", async (msg) => {
 
     }
 })
+
+
 
 client.login(process.env.TOKEN)
