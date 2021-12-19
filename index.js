@@ -7,7 +7,7 @@ dotenv.config()
 const prefix = ';'
 
 const url_tcas65 = 'https://media.discordapp.net/attachments/906186108650528808/910210700692049920/IMG_9777.jpg?width=705&height=393'
-const url_schedule = 'https://media.discordapp.net/attachments/912032605845741578/912032636053123103/image0.jpg?width=759&height=499'
+const url_schedule = 'https://media.discordapp.net/attachments/910090516006330371/921983318352863283/209984C3-C346-4367-BB2E-5C433939AAF3.png?width=1070&height=682'
 const url_gatpat_img = 'https://media.discordapp.net/attachments/906186108650528808/910210699999985684/IMG_9779.jpg?width=502&height=502'
 const url_9saman_img = 'https://media.discordapp.net/attachments/906186108650528808/910210700218101860/IMG_9778.jpg?width=502&height=502'
 const url_mytcas = 'https://www.mytcas.com/news/announcement-61'
@@ -47,7 +47,7 @@ client.on('messageCreate', async msg => {
 
         const schedule = new MessageEmbed()
             .setColor('#ffb703')
-	        .setTitle(':memo: ตารางสอน ชั้นมัธยมศึกษาปีที่ 6/3 (online)')
+	        .setTitle(':memo: ตารางสอน ชั้นมัธยมศึกษาปีที่ 6/3')
 	        .setDescription('**:bangbang: อย่าลืมเช็คชื่อในแต่ละคาบ :bangbang:**')
 	        .setImage(url_schedule)
             .setFooter('อ้างอิงข้อมูลจาก ฝ่ายวิชาการโรงเรียนมารีวิทยากบินทร์บุรี')
