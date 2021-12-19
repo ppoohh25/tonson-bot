@@ -1,12 +1,13 @@
-const {Client, Intents, MessageEmbed, MessageActionRow, MessageSelectMenu} = require('discord.js')
+const {Client, Collection, Intents, MessageEmbed, MessageActionRow, MessageSelectMenu} = require('discord.js')
 const dotenv = require('dotenv')
 const axios = require('axios')
+const fs = require('fs');
 
 dotenv.config()
 
 const prefix = ';'
 
-
+const url_quote = 'https://zenquotes.io/api/random'
 const url_covid = 'https://covid19.ddc.moph.go.th/api/Cases/today-cases-all'
 const url_MOPH_img = 'https://media.discordapp.net/attachments/910557153356550164/911654142768996352/logo_web.png'
 const url_slim = 'https://watasalim.vercel.app/api/quotes/random'
@@ -29,6 +30,8 @@ client.on('ready', () => {
     console.log('Ready');
     client.user.setActivity(';help | lnwtxn', {type: 'PLAYING'})  
 })
+
+
 
 client.on('messageCreate', async msg => {
     
