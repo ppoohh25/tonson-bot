@@ -6,16 +6,7 @@ dotenv.config()
 
 const prefix = ';'
 
-const url_tcas65 = 'https://media.discordapp.net/attachments/906186108650528808/910210700692049920/IMG_9777.jpg?width=705&height=393'
-const url_schedule = 'https://media.discordapp.net/attachments/910090516006330371/921983318352863283/209984C3-C346-4367-BB2E-5C433939AAF3.png?width=1070&height=682'
-const url_gatpat_img = 'https://media.discordapp.net/attachments/906186108650528808/910210699999985684/IMG_9779.jpg?width=502&height=502'
-const url_9saman_img = 'https://media.discordapp.net/attachments/906186108650528808/910210700218101860/IMG_9778.jpg?width=502&height=502'
-const url_mytcas = 'https://www.mytcas.com/news/announcement-61'
-const url_mytcas_img = 'https://media.discordapp.net/attachments/906186108650528808/910442373576806420/9k.png'
-const url_github = 'https://github.com/lnwtxn'
-const url_ig =  'https://www.instagram.com/kitton._/'
-const url_facebook = 'https://web.facebook.com/Thunder2004/'
-const url_quote = 'https://zenquotes.io/api/quotes'
+
 const url_covid = 'https://covid19.ddc.moph.go.th/api/Cases/today-cases-all'
 const url_MOPH_img = 'https://media.discordapp.net/attachments/910557153356550164/911654142768996352/logo_web.png'
 const url_slim = 'https://watasalim.vercel.app/api/quotes/random'
@@ -25,118 +16,51 @@ const url_tcas_university = 'https://api-tcas.herokuapp.com/'
 const url_friend = 'https://mvk19-section3-api.herokuapp.com/'
 const url_cheab_quote = 'https://cheab-quote.herokuapp.com'
 
-const client  = new Client(
-    { 
-        intents:[
-            Intents.FLAGS.GUILDS,
-            Intents.FLAGS.GUILD_MESSAGES
-        ]   
-    }
-)
+const lib_schedule = require('./src/schedule.js')
+const lib_gatpat = require('./src/gatpat.js')
+const lib_saman = require('./src/saman.js')
+const lib_tcas65 = require('./src/tcas65.js')
+const lib_help = require('./src/help.js')
+const lib_dev = require('./src/dev.js')
+
+const client  = new Client({ intents:[Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]})
 
 client.on('ready', () => {
-
     console.log('Ready');
-    client.user.setActivity(';command | lnwtxn', {type: 'PLAYING'})  
+    client.user.setActivity(';help | lnwtxn', {type: 'PLAYING'})  
 })
 
-//=================== class schedule ================
 client.on('messageCreate', async msg => {
     
     if (msg.content === prefix+'schedule') {
-
-        const schedule = new MessageEmbed()
-            .setColor('#ffb703')
-	        .setTitle(':memo: ตารางสอน ชั้นมัธยมศึกษาปีที่ 6/3')
-	        .setDescription('**:bangbang: อย่าลืมเช็คชื่อในแต่ละคาบ :bangbang:**')
-	        .setImage(url_schedule)
-            .setFooter('อ้างอิงข้อมูลจาก ฝ่ายวิชาการโรงเรียนมารีวิทยากบินทร์บุรี')
-        msg.channel.send({ embeds: [schedule] });
+        msg.channel.send({ embeds: [lib_schedule.schedule] });
     }
     
-    
-})
-
-//=================== gatpat & saman schedule ================
-client.on("messageCreate", async (msg) => {
     if (msg.content === prefix+'gatpat') {
-        const now = new Date();
-        const gat_day = new Date();
-        gat_day.setFullYear(2022,2,12)
-        const total = gat_day - now
-        const txt_totalday = Math.floor(total / (1000*60*60*24))
-
-        const gat = new MessageEmbed()
-            .setColor('#9b2226')
-	        .setTitle(':hourglass: ตารางสอบ Gat & Pat')
-            .setURL(url_mytcas)
-	        .setDescription(`====== **เหลือเวลาเตรียมตัวอีก ${txt_totalday} วัน** ======`)
-	        .setImage(url_gatpat_img)
-            .setFooter('อ้างอิงข้อมูลจาก www.mytcas.com', url_mytcas_img)
-        msg.channel.send({ embeds: [gat] });
+        msg.channel.send({ embeds: [lib_gatpat.gatpat] });
     }
 
     if (msg.content === prefix+'saman') {
-        const now = new Date();
-        const saman_day = new Date();
-        saman_day.setFullYear(2022,2,19)
-        const total = saman_day - now
-        const txt_totalday = Math.floor(total / (1000*60*60*24))
-
-        const saman = new MessageEmbed()
-            .setColor('#9b2226')
-            .setURL(url_mytcas) 
-	        .setTitle(':hourglass: ตารางสอบ 9 วิชาสามัญ')
-	        .setDescription(`====== **เหลือเวลาเตรียมตัวอีก ${txt_totalday} วัน** ======`)
-	        .setImage(url_9saman_img)
-            .setFooter('อ้างอิงข้อมูลจาก www.mytcas.com', url_mytcas_img)
-        msg.channel.send({ embeds: [saman] });
+        msg.channel.send({ embeds: [lib_saman.saman] });
     }
 
     if (msg.content === prefix+'tcas65') {
-        const tcas65 = new MessageEmbed()
-            .setColor('#9b2226')
-            .setURL(url_mytcas) 
-	        .setTitle(':date: ปฏิทิน TCAS65')
-	        .setImage(url_tcas65)
-            .setFooter('อ้างอิงข้อมูลจาก www.mytcas.com', url_mytcas_img)
-        msg.channel.send({ embeds: [tcas65] });
-    }
-})  
-
-//=================== command ================
-client.on("messageCreate", async (msg) => {
-    if (msg.content === prefix+'command') {
-        const command = new MessageEmbed()
-            .setColor('#03045e')
-	        .setTitle(':file_folder: Command List')
-	        .setDescription('**:red_circle: Prefix : `;`**'+ 
-                            '\n\n**:school: Class Schedule** \n`;schedule` = `ดูตารางสอน online` \n`;friend ชื่อเล่น` = `ข้อมูลส่วนตัวของเพื่อน`'+ 
-                            '\n\n**:memo: TCAS65 Schudule**\n `;gatpat` = `ดูตารางสอบ Gat & Pat และดูเวลาเตรียมตัว` \n `;tcas ชื่อย่อของมหาวิทยาลัย` = `ดูข้อมูล Admission`'+ 
-                            '\n `;saman` = `ดูตารางสอบ 9 วิชาสามัญ และดูเวลาเตรียมตัว` \n `;tcas65` = `ดูปฏิทิน TCAS65`'+ 
-                            '\n\n **:speech_left: Message API** \n `;covid19 thailand` = `ดูรายงานโควิดประจำวัน`\n`;covid ชื่อจังหวัด` = `ดูรายงานโควิดประจำจังหวัด`'+
-                            ' \n `;inspire` = `ดูแรงบันดาลใจ`'+
-                            '\n`;watasalim` = `ดูวาทกรรมสลิ่ม` \n `;cheab` = `คำคมเฉียบๆ`'+
-                            '\n\n **:mag_right: About** \n `;dev` = `ข้อมูลผู้พัฒนา`')
-        msg.channel.send({ embeds: [command] });
+        msg.channel.send({ embeds: [lib_tcas65.tcas65] });
     }
 
+    if (msg.content === prefix+'help') {
+        msg.channel.send({ embeds: [lib_help.help] });
+    }
+    
     if (msg.content === prefix+'dev') {
-        const dev = new MessageEmbed()
-            .setColor('#03045e')
-            .setTitle(':computer: Developer Profile')
-            .setDescription('**This Bot is Develop by : <@400087960428609536> **'+ 
-                            `\n\n :envelope: **Contact Me** \n :link: My Github : ${url_github}`+
-                            `\n :link: My Facebook : ${url_facebook} \n :link: My Instagram : ${url_ig}`)
-        msg.channel.send({embeds: [dev]})
+        msg.channel.send({embeds: [lib_dev.dev]})
     }
 })
+
 
 //===================== inspirational quotes ==================
 client.on("messageCreate", async (msg) => {
     if (msg.content === prefix+'inspire') {
-        //get api form https://zenquotes.io/api/quotes
-
         const inspireData = async () => {
             const res = await axios.get(url_quote)
             const resdata = res.data
