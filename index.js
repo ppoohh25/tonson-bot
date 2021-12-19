@@ -37,7 +37,7 @@ const client  = new Client(
 client.on('ready', () => {
 
     console.log('Ready');
-    client.user.setActivity(';command', {type: 'PLAYING'})  
+    client.user.setActivity(';command | lnxtxn', {type: 'PLAYING'})  
 })
 
 //=================== class schedule ================
